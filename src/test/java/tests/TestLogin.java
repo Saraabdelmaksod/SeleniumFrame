@@ -1,56 +1,47 @@
 package tests;
 
-import drivers.WebDriverFactory;
-import io.qameta.allure.Description;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import baseTest.BaseTest;
+import io.qameta.allure.*;
 import io.qameta.allure.testng.Tag;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import listen.Listeners;
 import org.testng.annotations.Test;
+import pages.HomeScreen;
 import pages.LoginScreen;
 
+import static utils.reader.ConfigHandler.urlProperty;
+import static utils.reader.ConfigHandler.websiteProperty;
 
-public class TestLogin {
 
-    //variables
-    WebDriver driver;
+public class TestLogin extends BaseTest {
+
     // method
-    @Test(priority = 0)
+    @Epic("Login")
+    @Feature("login with credeantionls")
+    @Test(priority = 0,retryAnalyzer = Listeners.class)
     @Description("Validate that user can login Successfully with valid user name and password")
     @Tag("Happy SC")
     @Severity(SeverityLevel.CRITICAL)
     @Story("Login")
     public void loginSuccessfully(){
         new LoginScreen(driver)
-                .login("standard_user", "secret_sauce");
+                .login(websiteProperty.getProperty("username"), websiteProperty.getProperty("password"));
+        new HomeScreen(driver).assertUserIsLoggedInWithCorrectUrl(urlProperty.getProperty("home-url"));
     }
 
 
+    @Epic("Login")
+    @Feature("login with credeantionls")
     @Description("Validate that user errpr message will be displayed in cases user locked")
-     @Test(priority = 1)
+     @Test(priority = 1,retryAnalyzer = Listeners.class)
     @Tag("Negative SC")
     @Severity(SeverityLevel.MINOR)
     @Story("Login")
     public void loginWithLockedAccount(){
         new LoginScreen(driver)
-                .login("locked_out_user", "secret_sauce");
+                .login(websiteProperty.getProperty("invalid_username"), websiteProperty.getProperty("password"));
         new LoginScreen(driver).errorMessageIsDisplayed();
     }
     // config
 
-    @BeforeMethod
-    public void setup(){
-     driver= WebDriverFactory.initDriver("edge");
-        driver.get("https://www.saucedemo.com/");
-    }
 
-    @AfterMethod
-    public void close(){
-        WebDriverFactory.quitDriver();
-    }
 }

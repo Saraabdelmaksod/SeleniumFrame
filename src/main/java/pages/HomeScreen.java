@@ -1,6 +1,7 @@
 package pages;
 
 import bot.ActionBot;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -22,21 +23,25 @@ public class HomeScreen {
         actionBot= new ActionBot(driver);
     }
 
-    public HomeScreen isLoggedIn(String expectedUrl){
+    @Step("user validate current url")
+    public HomeScreen assertUserIsLoggedInWithCorrectUrl(String expectedUrl){
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl);
         return this;
     }
 
+    @Step("user add first item to cart")
     public HomeScreen addFirstItemToCard(){
         actionBot.click(addToCartButton);
         return this;
     }
+    @Step("user validate cart count")
     public HomeScreen assertCount(){
         Assert.assertEquals(
                actionBot.getText(cartItemCount),"1");
         return this;
     }
 
+    @Step("user log out")
     public LoginScreen logout(){
         actionBot.click(meue);
         actionBot.click(logoutButton);

@@ -1,38 +1,29 @@
 package tests;
 
-import drivers.WebDriverFactory;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import baseTest.BaseTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import listen.Listeners;
 import org.testng.annotations.Test;
 import pages.LoginScreen;
 
+import static utils.reader.ConfigHandler.websiteProperty;
 
-public class TestHome {
 
-WebDriver driver;
+public class TestHome  extends BaseTest {
 
-@Test
+
+
+    @Epic("Home")
+    @Feature("home page")
+@Test(retryAnalyzer = Listeners.class)
 public void validateThatUserCanAddItem()  {
     //Fluent pattern + page object
     //Anoumous object
     new LoginScreen(driver)
-            .login("standard_user", "secret_sauce")
+            .login(websiteProperty.getProperty("username"), websiteProperty.getProperty("password"))
             .addFirstItemToCard()
             .assertCount().logout();
-
 }
 
-
-    @BeforeMethod
-    public void setup(){
-        driver= WebDriverFactory.initDriver("chrome");
-        driver.get("https://www.saucedemo.com/");
-    }
-
-    @AfterMethod
-    public void close(){
-        WebDriverFactory.quitDriver();
-
-    }
 }
