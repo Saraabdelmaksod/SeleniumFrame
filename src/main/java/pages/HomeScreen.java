@@ -16,7 +16,7 @@ public class HomeScreen {
     private final By cartItemCount=By.className("shopping_cart_badge");
     private final By  meue=By.id("react-burger-menu-btn");
     private final By logoutButton=By.id("logout_sidebar_link");
-
+     private final By firstItemPrice=By.xpath("(//div[@class=\"inventory_item_price\"])[1]");
 
     public HomeScreen(WebDriver driver){
         this.driver= driver;
@@ -30,9 +30,9 @@ public class HomeScreen {
     }
 
     @Step("user add first item to cart")
-    public HomeScreen addFirstItemToCard(){
+    public CartScreen addFirstItemToCard(){
         actionBot.click(addToCartButton);
-        return this;
+        return new CartScreen(driver);
     }
     @Step("user validate cart count")
     public HomeScreen assertCount(){
@@ -46,6 +46,10 @@ public class HomeScreen {
         actionBot.click(meue);
         actionBot.click(logoutButton);
         return new LoginScreen(driver);
+    }
+    @Step("user get first item price")
+    public String getFirstItemPrice(){
+        return actionBot.getText(firstItemPrice);
     }
 
 }

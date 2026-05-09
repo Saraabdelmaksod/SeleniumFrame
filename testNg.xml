@@ -6,6 +6,7 @@
         <classes>
           <class name="tests.TestLogin"/>
             <class name="tests.TestHome"/>
+            <class name="tests.TestCart"/>
 
         </classes>
     </test>
